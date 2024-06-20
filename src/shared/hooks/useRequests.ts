@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+import { connectionAPIPost } from '../functions/connection/connectionAPI';
+import { useGlobalContext } from './useGlobalContext';
+
 export const useRequests = () => {
   const [loading, setLoading] = useState(false);
+  const { setNotification } = useGlobalContext();
 
   const getRequest = async (url: string) => {
     setLoading(true);
@@ -18,19 +22,15 @@ export const useRequests = () => {
       });
   };
 
-  const postRequest = async (url: string, body: any) => {
+  const postRequest = async (url: string, body: unknown) => {
     setLoading(true);
-    const returnData = await axios({
-      method: 'post',
-      url: url,
-      data: body,
-    })
+    const returnData = await connectionAPIPost(url, body)
       .then((result) => {
-        alert('Login');
-        return result.data;
+        setNotification('Entrando...', 'success');
+        return result;
       })
-      .catch(() => {
-        alert('Error');
+      .catch((error: Error) => {
+        setNotification(error.message, 'error');
       });
 
     setLoading(false);
