@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+
 import { getAuthorizationToken, setAuthorizationToken } from '../functions/connection/auth';
 
 type NotificatioType = 'success' | 'info' | 'warning' | 'error';
@@ -42,8 +43,8 @@ export const useGlobalContext = () => {
     const token = getAuthorizationToken();
     if (token) {
       setAccessToken(token);
-    }    
-  }, [])
+    }
+  }, []);
 
   const setAccessToken = (accessToken: string) => {
     setAuthorizationToken(accessToken);
